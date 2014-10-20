@@ -5,7 +5,7 @@
 ####################################################################
 
 CC = gcc
-CFLAGS = -Wall -g -O0 
+CFLAGS = -std=gnu99 -Wall -g -O0 
 LIBS =
 
 LIBPOS =

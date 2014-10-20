@@ -76,10 +76,10 @@ int main(int argc, char *argv[]) {
     free(be);
     free(bs);
 
-for ( i = 0; i < 6; ++i)
-{
-   printf("lcc[1][%d] = %d\n", i, lcc[1][i] );
-}
+    for ( i = 0; i < 6; ++i)
+    {
+       printf("lcc[1][%d] = %d\n", i, lcc[1][i] );
+    }
 
    for ( i = nintci; i <= nintcf; i++ ) {
         free(lcc[i]);

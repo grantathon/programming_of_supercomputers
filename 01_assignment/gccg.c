@@ -8,11 +8,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "mpi.h"
+#include <mpi.h>
 
 #include "initialization.h"
 #include "compute_solution.h"
 #include "finalization.h"
+#include "vol2mesh.h"
+#include "util_write_files.h"
 
 int main(int argc, char *argv[]) {
     int i;
@@ -35,8 +37,10 @@ int main(int argc, char *argv[]) {
 
     /** Additional vectors required for the computation */
     double *cgup, *oc, *cnorm;
+    int node_count;
+    int **points, **elems;
 
-   
+    // Read input arguements
     char *file_format = argv[1];
     char *file_in = argv[2];
 
@@ -70,6 +74,13 @@ int main(int argc, char *argv[]) {
     int total_iters = compute_solution(max_iters, nintci, nintcf, nextcf, lcc, bp, bs, bw, bl, bn,
                                        be, bh, cnorm, var, su, cgup, &residual_ratio);
     /********** END COMPUTATIONAL LOOP **********/
+
+    // Convert the volume data to mesh data for vtk visualization output
+    //vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,  int*** elems)
+    vol2mesh(nintci, nintcf, lcc, &node_count, &points, &elems);
+
+    //int write_result_vtk(char *outFileName, int startIdx, int endIdx, int nodeCnt, int **points, int **elems, double *vector)
+    //write_result_vtk("var.vtk", nintci, nintcf, node_count, points, elems, double *vector);
 
     /********** START FINALIZATION **********/
     finalization(file_in, total_iters, residual_ratio, nintci, nintcf, var, cgup, su);

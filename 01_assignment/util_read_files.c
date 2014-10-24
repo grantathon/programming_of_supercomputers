@@ -13,7 +13,18 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
         double **bw, double **bl, double **bh, double **bp, double **su)
 {
     int i;
-    FILE *fp = fopen(filename, "r");
+    FILE *fp;
+
+    // Determine file format from which to read
+    if(!strcmp(file_format, "text"))
+    {
+        fp = fopen(filename, "rb");
+    }
+    else if(!strcmp(file_format, "bin"))
+    {
+        fp = fopen(filename, "rb");
+    }
+
     if (fp == NULL)
     {
         printf("Error opening file %s\n", filename);

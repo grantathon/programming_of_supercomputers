@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "util_read_files.h"
 
-int read_formatted(char *filename, int *nintci, int *nintcf, int *nextci,
+int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, int *nextci,
         int *nextcf, int ***lcc, double **bs, double **be, double **bn,
         double **bw, double **bl, double **bh, double **bp, double **su)
 {

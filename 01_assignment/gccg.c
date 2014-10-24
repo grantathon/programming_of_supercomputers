@@ -14,10 +14,6 @@
 #include "compute_solution.h"
 #include "finalization.h"
 
-// PAPI header file
- #include "papi.h"
-
- 
 int main(int argc, char *argv[]) {
     int i;
 
@@ -41,12 +37,19 @@ int main(int argc, char *argv[]) {
     double *cgup, *oc, *cnorm;
 
    
- 
-    char *file_in = argv[1];
+    char *file_format = argv[1];
+    char *file_in = argv[2];
+
+    // Check if file format is valid
+    if(strcmp(file_format, "text") && strcmp(file_format, "bin"))
+    {
+        fprintf(stderr, "Please provide a file format as either 'text' or 'bin' (first arguement).\n");
+        abort();
+    }
  
     /********** START INITIALIZATION **********/
     // read-in the input file
-    int init_status = initialization(file_in, &nintci, &nintcf, &nextci, &nextcf, &lcc,
+    int init_status = initialization(file_in, file_format, &nintci, &nintcf, &nextci, &nextcf, &lcc,
                                      &bs, &be, &bn, &bw, &bl, &bh, &bp, &su, &var, &cgup, &oc, 
                                      &cnorm);
 
@@ -55,6 +58,10 @@ int main(int argc, char *argv[]) {
         abort();
     } 
 
+    printf("nintci = %d\n", nintci);
+    printf("nintcf = %d\n", nintcf);
+    printf("nextci = %d\n", nextci);
+    printf("nextcf = %d\n", nextcf);
    
     /********** END INITIALIZATION **********/
 

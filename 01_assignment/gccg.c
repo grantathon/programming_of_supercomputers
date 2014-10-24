@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
    
 	/********** END INITIALIZATION **********/
 
-	//	initialize PAPI library
+	//	TODO: initialize PAPI library
 /*	if (PAPI_library_init ( PAPI_VER_CURRENT ) != PAPI_VER_CURRENT )
 	{
 		printf("\nerror: PAPI initialization failed! Exiting.\n");

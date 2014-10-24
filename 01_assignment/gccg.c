@@ -56,8 +56,9 @@ int main(int argc, char *argv[]) {
     if ( init_status != 0 ) {
         fprintf(stderr, "Failed to initialize data!\n");
         abort();
-    } 
+    }
 
+    // Display to user some input file parameters
     printf("nintci = %d\n", nintci);
     printf("nintcf = %d\n", nintcf);
     printf("nextci = %d\n", nextci);

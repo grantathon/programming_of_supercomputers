@@ -18,7 +18,7 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
     // Determine file format from which to read
     if(!strcmp(file_format, "text"))
     {
-        fp = fopen(filename, "rb");
+        fp = fopen(filename, "r");
     }
     else if(!strcmp(file_format, "bin"))
     {

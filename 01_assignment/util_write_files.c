@@ -1,8 +1,8 @@
 /**
  * Helper functions for writing results to VTK and text files
  *
- * @author E. Xue, V. Petkov
- * @date 22-May-2009, 22-Oct-2012
+ * @author E. Xue, V. Petkov, A. Berariu
+ * @date 22-May-2009, 22-Oct-2012, 22-Oct-2014
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -124,15 +124,15 @@ int write_result_vtk(char *outFileName, int startIdx, int endIdx, int nodeCnt, i
     fprintf(fp,"POINTS %d float\n",nodeCnt);
 
     printf("nodeCnt = %d, startInd= %d, endInd = %d, cellCnt=%d\n",nodeCnt, startIdx, endIdx, cellCnt);
-    for (i = 1; i<=nodeCnt/2; i++){
-        fprintf(fp,"%d %d %d ",points[0][2*i],points[1][2*i],points[2][2*i]);
-        fprintf(fp,"%d %d %d\n",points[0][2*i+1],points[1][2*i+1],points[2][2*i+1]);
+
+    for (i = 1; i<=nodeCnt; i++){
+        fprintf(fp,"%d %d %d\n",points[0][i],points[1][i],points[2][i]);
     }
 
     fprintf(fp,"\nCELLS %d %d\n",cellCnt, 9*cellCnt);
     for (i = startIdx; i<= endIdx; i++){
-        fprintf(fp,"8 %d %d %d %d %d %d %d %d\n",elems[0][i],elems[1][i],elems[2][i],
-            elems[3][i],elems[4][i],elems[5][i],elems[6][i],elems[7][i]);
+        fprintf(fp,"8 %d %d %d %d %d %d %d %d\n",elems[0][i]-1,elems[1][i]-1,
+            elems[3][i]-1,elems[2][i]-1, elems[4][i]-1,elems[5][i]-1, elems[7][i]-1, elems[6][i]-1);
     }
 
     fprintf(fp,"\nCELL_TYPES %d\n",cellCnt);

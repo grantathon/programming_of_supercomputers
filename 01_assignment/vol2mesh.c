@@ -3,7 +3,7 @@
  *
  * Author: A. Berariu 
  * Date: Oct 08, 2009
- *  
+ * Update: Oct 22, 2014 
  */
 
 #include <stdio.h>
@@ -157,13 +157,14 @@ int vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,	i
 	int NC;
 	for (NC = startIdx; NC <= endIdx; NC++)
 	{ // for each volume cell
+
 		for (nodeIdx = 0; nodeIdx < 8; nodeIdx++)
 		{ // for each node
 			foundVal = 0;
 			//check the 3 neighbours
 			for (nghbIdx = 0; nghbIdx < 6; nghbIdx = nghbIdx + 2)
 			{
-				currNghb = LCC[node2nghbMap[nodeIdx][nghbIdx]][NC];
+				currNghb = LCC[NC][node2nghbMap[nodeIdx][nghbIdx]];
 				if (currNghb < NC)
 				{
 					(*elems)[nodeIdx][NC] =
@@ -184,7 +185,7 @@ int vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,	i
 				} else if (nodeIdx == 0)
 				{ //special case, search for coordinates by neighbors
 					// E nghb
-					currNghb = LCC[1][NC];
+					currNghb = LCC[NC][1];
 					if (NC > currNghb)
 					{
 						(*points)[0][nodes] = (*points)[0][currNghb];
@@ -193,7 +194,7 @@ int vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,	i
 					}
 					else
 					{
-						currNghb = LCC[2][NC];
+						currNghb = LCC[NC][2];
 						if (NC > currNghb)
 						{
 							(*points)[0][nodes] = (*points)[0][currNghb] + 1;
@@ -202,7 +203,7 @@ int vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,	i
 						}
 						else
 						{
-							currNghb = LCC[5][NC];
+							currNghb = LCC[NC][5];
 							if (NC > currNghb)
 							{
 								(*points)[0][nodes] = (*points)[0][currNghb];

@@ -8,12 +8,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "mpi.h"
+#include <mpi.h>
 
 #include "initialization.h"
 #include "compute_solution.h"
 #include "finalization.h"
+#include "vol2mesh.h"
+#include "util_write_files.h"
 
+<<<<<<< HEAD
 // PAPI header file
  #include "papi.h"
 
@@ -136,6 +139,7 @@ int main(int argc, char *argv[])
 		free(lcc[i]);
 	}
 	free(lcc);
+
  
 	// calculate and print the PAPI performance variables
 	// { L2_TotalAccess, L3_TotalAccess, L2_TotalMisses, L3_TotalMisses, FloatingPointOps }

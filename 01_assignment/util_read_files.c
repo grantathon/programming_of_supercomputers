@@ -8,12 +8,23 @@
 #include <stdlib.h>
 #include "util_read_files.h"
 
-int read_formatted(char *filename, int *nintci, int *nintcf, int *nextci,
+int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, int *nextci,
         int *nextcf, int ***lcc, double **bs, double **be, double **bn,
         double **bw, double **bl, double **bh, double **bp, double **su)
 {
     int i;
-    FILE *fp = fopen(filename, "r");
+    FILE *fp;
+
+    // Determine file format from which to read
+    if(!strcmp(file_format, "text"))
+    {
+        fp = fopen(filename, "r");
+    }
+    else if(!strcmp(file_format, "bin"))
+    {
+        fp = fopen(filename, "rb");
+    }
+
     if (fp == NULL)
     {
         printf("Error opening file %s\n", filename);

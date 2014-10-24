@@ -14,6 +14,10 @@
 #include "compute_solution.h"
 #include "finalization.h"
 
+// PAPI header file
+ #include "papi.h"
+
+ 
 int main(int argc, char *argv[]) {
     int i;
 

@@ -5,8 +5,8 @@
 ####################################################################
 
 CC = mpicc -cc=icc
-CFLAGS = -Wall -g -O0 
-LIBS = -lm
+CFLAGS = -Wall -g -O1 $(PAPI_INC) 
+LIBS = -lm $(PAPI_LIB)
 
 LIBPOS=libpos.a
 AR = ar

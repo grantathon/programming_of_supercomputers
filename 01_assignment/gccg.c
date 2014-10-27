@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     /********** END INITIALIZATION **********/
 
     //  TODO: initialize PAPI library
-  if (PAPI_library_init ( PAPI_VER_CURRENT ) != PAPI_VER_CURRENT )
+    if (PAPI_library_init ( PAPI_VER_CURRENT ) != PAPI_VER_CURRENT )
     {
         printf("\nerror: PAPI initialization failed! Exiting.\n");
         exit(1);
@@ -142,6 +142,7 @@ int main(int argc, char *argv[])
     int retErr = PAPI_stop_counters(values, NUM_EVENTS);
     if (retErr != PAPI_OK)
     {
+        printf("inside stop counters\n");
         handle_error(retErr);
         //printf("\nerror: PAPI error while stopping the counters!\n");
     }
@@ -182,7 +183,7 @@ int main(int argc, char *argv[])
     float missRate_L2 = ( (float)values[2] / (float)values[0] );
     float missRate_L3 = ( (float)values[3] / (float)values[1] );
 
-    printf("\nWall clock time in usecs: %lld\n", end_usec - start_usec);
+    printf("\nWall clock time [sec]: %f\n", (float)( end_usec - start_usec ) / 1000000);
     printf("Time in clock cycles: %lld\n", end_cycles - start_cycles);  
     printf("Mflops: %lli \n", (values[4] / 1000000));
     printf("L2 misses: %lli \n", values[2]);

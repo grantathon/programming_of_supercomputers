@@ -175,7 +175,6 @@ int main(int argc, char *argv[])
         free(lcc[i]);
     }
     free(lcc);
-
  
     // calculate and print the PAPI performance variables
     // { L2_TotalAccess, L3_TotalAccess, L2_TotalMisses, L3_TotalMisses, FloatingPointOps }

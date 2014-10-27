@@ -16,7 +16,8 @@
 #include "vol2mesh.h"
 #include "util_write_files.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int i;
 
     const int max_iters = 10000;    /// maximum number of iteration to perform
@@ -40,9 +41,17 @@ int main(int argc, char *argv[]) {
     int node_count;
     int **points, **elems;
 
+    // Check if number of arguements is correct
+    if(argc != 4)
+    {
+        fprintf(stderr, "Please provide three arguements: <format> <input file> <output prefix>.\n");
+        abort();
+    }
+
     // Read input arguements
     char *file_format = argv[1];
     char *file_in = argv[2];
+    char *output_prefix = argv[3];
 
     // Check if file format is valid
     if(strcmp(file_format, "text") && strcmp(file_format, "bin"))
@@ -76,11 +85,18 @@ int main(int argc, char *argv[]) {
     /********** END COMPUTATIONAL LOOP **********/
 
     // Convert the volume data to mesh data for vtk visualization output
-    //vol2mesh(int startIdx, int endIdx, int** LCC, int* nodeCnt, int*** points,  int*** elems)
     vol2mesh(nintci, nintcf, lcc, &node_count, &points, &elems);
 
-    //int write_result_vtk(char *outFileName, int startIdx, int endIdx, int nodeCnt, int **points, int **elems, double *vector)
-    //write_result_vtk("var.vtk", nintci, nintcf, node_count, points, elems, double *vector);
+    // Output vtk files with appropriate naming convention
+    char var_vtk_name[50];
+    char su_vtk_name[50];
+    char cgup_vtk_name[50];
+    sprintf(var_vtk_name, "%s.VAR.vtk", output_prefix);
+    sprintf(su_vtk_name, "%s.SU.vtk", output_prefix);
+    sprintf(cgup_vtk_name, "%s.CGUP.vtk", output_prefix);
+    write_result_vtk(var_vtk_name, nintci, nintcf, node_count, points, elems, var);
+    write_result_vtk(su_vtk_name, nintci, nintcf, node_count, points, elems, su);
+    write_result_vtk(cgup_vtk_name, nintci, nintcf, node_count, points, elems, cgup);
 
     /********** START FINALIZATION **********/
     finalization(file_in, total_iters, residual_ratio, nintci, nintcf, var, cgup, su);

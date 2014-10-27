@@ -16,7 +16,6 @@
 #include "vol2mesh.h"
 #include "util_write_files.h"
 
-<<<<<<< HEAD
 // PAPI header file
  #include "papi.h"
 
@@ -79,11 +78,11 @@ int main(int argc, char *argv[])
 	/********** END INITIALIZATION **********/
 
 	//	TODO: initialize PAPI library
-/*	if (PAPI_library_init ( PAPI_VER_CURRENT ) != PAPI_VER_CURRENT )
+	if (PAPI_library_init ( PAPI_VER_CURRENT ) != PAPI_VER_CURRENT )
 	{
 		printf("\nerror: PAPI initialization failed! Exiting.\n");
 		exit(1);
-	}	*/
+	}
 
 	start_cycles = PAPI_get_real_cyc();	// Gets the starting time in clock cycles
 	start_usec = PAPI_get_real_usec();	// Gets the starting time in microseconds

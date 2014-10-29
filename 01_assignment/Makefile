@@ -4,7 +4,7 @@
 #                                                                  #
 ####################################################################
 
-CC = mpicc -cc=icc
+CC = mpicc -icc
 CFLAGS = -Wall -g -O1 $(PAPI_INC) 
 LIBS = -lm $(PAPI_LIB)
 

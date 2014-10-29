@@ -12,5 +12,5 @@
 #@ notification = always
 #@ notify_user = grant.bartel@tum.de
 #@ queue
-./gccg text data/tjunc.dat
+./gccg bin data/pent.bin pent
 echo "The job has finished!"

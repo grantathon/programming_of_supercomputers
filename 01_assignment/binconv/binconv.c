@@ -29,11 +29,15 @@ int main(int argc, char *argv[])
     // Create binary output file
     outputFile = fopen(argv[2], "wb");
 
-    // Read the initial row parameters that describe file construction
+    // Read and write the initial row parameters that describe file construction
     fscanf(inputFile, "%d", &startInners);
     fscanf(inputFile, "%d", &endInners);
     fscanf(inputFile, "%d", &startOuters);
     fscanf(inputFile, "%d", &endOuters);
+    fwrite(&startInners, sizeof(startInners), 1, outputFile);
+    fwrite(&endInners, sizeof(endInners), 1, outputFile);
+    fwrite(&startOuters, sizeof(startOuters), 1, outputFile);
+    fwrite(&endOuters, sizeof(endOuters), 1, outputFile);
 
     // Read and write the integer-based rows
     for(int i = startInners; i < startOuters; i++)
@@ -45,7 +49,7 @@ int main(int argc, char *argv[])
         }
 
         // Output the row elements
-        fwrite(intInput, INT_ROW_SIZE, sizeof(*intInput), outputFile);
+        fwrite(intInput, sizeof(*intInput), INT_ROW_SIZE, outputFile);
     }
 
     // Read and write the double-based rows
@@ -58,7 +62,7 @@ int main(int argc, char *argv[])
         }
 
         // Output the row elements
-        fwrite(doubleInput, DOUBLE_ROW_SIZE, sizeof(*doubleInput), outputFile);
+        fwrite(doubleInput, sizeof(*doubleInput), DOUBLE_ROW_SIZE, outputFile);
     }
 
     // Close files

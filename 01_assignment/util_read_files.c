@@ -20,7 +20,7 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
     {
         fp = fopen(filename, "r");
     }
-    else if(!strcmp(file_format, "bin"))
+    else
     {
         fp = fopen(filename, "rb");
     }
@@ -30,12 +30,23 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
         printf("Error opening file %s\n", filename);
         return -1;
     }
-    //4 variables in total!!!
-    fscanf(fp, "%d", nintci);
-    fscanf(fp, "%d", nintcf);
-    fscanf(fp, "%d", nextci);
-    fscanf(fp, "%d", nextcf);
 
+    //4 variables in total!!!
+    if(!strcmp(file_format, "text"))
+    {
+        fscanf(fp, "%d", nintci);
+        fscanf(fp, "%d", nintcf);
+        fscanf(fp, "%d", nextci);
+        fscanf(fp, "%d", nextcf);
+    }
+    else
+    {
+        fread(nintci, sizeof(int), 1, fp);
+        fread(nintcf, sizeof(int), 1, fp);
+        fread(nextci, sizeof(int), 1, fp);
+        fread(nextcf, sizeof(int), 1, fp);
+    }
+    
     //allocating lcc
     if ((*lcc = (int**) malloc( ( (*nintcf) - (*nintci) + 1) * sizeof(int*) )) == NULL)
     {
@@ -53,14 +64,29 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
 
     //start reading lcc
     //note that c array index starts from 0 while fortran starts from 1!
-    for (i = (*nintci); i <= (*nintcf); i++)
+    if(!strcmp(file_format, "text"))
     {
-        fscanf(fp, "%d", &(*lcc)[i][0]);
-        fscanf(fp, "%d", &(*lcc)[i][1]);
-        fscanf(fp, "%d", &(*lcc)[i][2]);
-        fscanf(fp, "%d", &(*lcc)[i][3]);
-        fscanf(fp, "%d", &(*lcc)[i][4]);
-        fscanf(fp, "%d", &(*lcc)[i][5]);
+        for (i = (*nintci); i <= (*nintcf); i++)
+        {
+            fscanf(fp, "%d", &(*lcc)[i][0]);
+            fscanf(fp, "%d", &(*lcc)[i][1]);
+            fscanf(fp, "%d", &(*lcc)[i][2]);
+            fscanf(fp, "%d", &(*lcc)[i][3]);
+            fscanf(fp, "%d", &(*lcc)[i][4]);
+            fscanf(fp, "%d", &(*lcc)[i][5]);
+        }
+    }
+    else
+    {
+        for (i = (*nintci); i <= (*nintcf); i++)
+        {
+            fread(&(*lcc)[i][0], sizeof(int), 1, fp);
+            fread(&(*lcc)[i][1], sizeof(int), 1, fp);
+            fread(&(*lcc)[i][2], sizeof(int), 1, fp);
+            fread(&(*lcc)[i][3], sizeof(int), 1, fp);
+            fread(&(*lcc)[i][4], sizeof(int), 1, fp);
+            fread(&(*lcc)[i][5], sizeof(int), 1, fp);
+        }
     }
 
     // allocate other arrays
@@ -106,16 +132,33 @@ int read_formatted(char *filename, char* file_format, int *nintci, int *nintcf, 
     }
 
     // read the other arrays
-    for (i = (*nintci); i <= *nintcf; i++)
+    if(!strcmp(file_format, "text"))
     {
-        fscanf(fp, "%lf", &((*bs)[i]));
-        fscanf(fp, "%lf", &((*be)[i]));
-        fscanf(fp, "%lf", &((*bn)[i]));
-        fscanf(fp, "%lf", &((*bw)[i]));
-        fscanf(fp, "%lf", &((*bl)[i]));
-        fscanf(fp, "%lf", &((*bh)[i]));
-        fscanf(fp, "%lf", &((*bp)[i]));
-        fscanf(fp, "%lf", &((*su)[i]));
+        for (i = (*nintci); i <= *nintcf; i++)
+        {
+            fscanf(fp, "%lf", &((*bs)[i]));
+            fscanf(fp, "%lf", &((*be)[i]));
+            fscanf(fp, "%lf", &((*bn)[i]));
+            fscanf(fp, "%lf", &((*bw)[i]));
+            fscanf(fp, "%lf", &((*bl)[i]));
+            fscanf(fp, "%lf", &((*bh)[i]));
+            fscanf(fp, "%lf", &((*bp)[i]));
+            fscanf(fp, "%lf", &((*su)[i]));
+        }
+    }
+    else
+    {
+        for (i = (*nintci); i <= *nintcf; i++)
+        {
+            fread(&((*bs)[i]), sizeof(double), 1, fp);
+            fread(&((*be)[i]), sizeof(double), 1, fp);
+            fread(&((*bn)[i]), sizeof(double), 1, fp);
+            fread(&((*bw)[i]), sizeof(double), 1, fp);
+            fread(&((*bl)[i]), sizeof(double), 1, fp);
+            fread(&((*bh)[i]), sizeof(double), 1, fp);
+            fread(&((*bp)[i]), sizeof(double), 1, fp);
+            fread(&((*su)[i]), sizeof(double), 1, fp);
+        }
     }
 
     fclose(fp);

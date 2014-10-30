@@ -23,8 +23,11 @@ all: gccg
 gccg: gccg.c $(LIBPOS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
+binconv: binconv.c
+	gcc -std=gnu99 -Wall -g -O0 binconv.c -o binconv
+
 $(LIBPOS) : $(OBJS)
 	$(AR) $(ARFLAGS) $@ $+
 
 clean:
-	rm -rf *.o gccg $(LIBPOS)
+	rm -rf *.o gccg binconv $(LIBPOS)

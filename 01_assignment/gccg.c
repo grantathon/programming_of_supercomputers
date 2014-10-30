@@ -138,12 +138,6 @@ int main(int argc, char *argv[])
     
     /* stop timer for data read   */
     end_usec[0] = PAPI_get_real_usec();
-    
-    // Display to user some input file parameters
-    printf("nintci = %d\n", nintci);
-    printf("nintcf = %d\n", nintcf);
-    printf("nextci = %d\n", nextci);
-    printf("nextcf = %d\n", nextcf);
 
     /********** END INITIALIZATION **********/
 

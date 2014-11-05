@@ -12,7 +12,7 @@ LIBPOS=libpos.a
 AR = ar
 ARFLAGS = rv
 
-SRCS = initialization.c compute_solution.c finalization.c util_read_files.c util_write_files.c
+SRCS = initialization.c compute_solution.c finalization.c util_read_files.c util_write_files.c data_distribution.c
 OBJS =  $(addsuffix .o, $(basename $(SRCS)))
 
 all: gccg 

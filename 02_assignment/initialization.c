@@ -9,6 +9,7 @@
 
 #include "util_read_files.h"
 #include "initialization.h"
+#include "data_distribution.h"
 
 int initialization(char* file_in, char* part_type, char* read_type, int nprocs, int myrank,
                    int* nintci, int* nintcf, int* nextci,
@@ -18,10 +19,12 @@ int initialization(char* file_in, char* part_type, char* read_type, int nprocs, 
                    double** cnorm, int** local_global_index) {
     /********** START INITIALIZATION **********/
     int i = 0;
+    int f_status = 0;
+
     // read-in the input file
-    int f_status = read_binary_geo(file_in, &*nintci, &*nintcf, &*nextci, &*nextcf, &*lcc, &*bs,
-                                   &*be, &*bn, &*bw, &*bl, &*bh, &*bp, &*su, &*points_count,
-                                   &*points, &*elems);
+    f_status = read_data(   file_name, part_type, read_type, nintci, nintcf, nextci, nextcf,
+                                          lcc, bs, be, bn, bw, bl, bh, bp, su, points_count, points, elems,
+                                          local_global_index, nprocs, myrank);
 
     if ( f_status != 0 ) return f_status;
 

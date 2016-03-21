@@ -6,10 +6,13 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include "mpi.h"
 #include "util_write_files.h"
+#include "test_functions.h"
 
 int store_simulation_stats(char *in_file_name, char *out_file_name, int nintci, int nintcf,
-                           double *var, int total_iters, double residual_ratio) {
+                           double *var, int total_iters, double residual_ratio)
+{
     double *points = (double *) malloc((nintcf + 1) * sizeof(double));
     int i1, i2, i3, i4, i5;
 
@@ -58,7 +61,7 @@ int store_simulation_stats(char *in_file_name, char *out_file_name, int nintci, 
     printf("========================================\n\n");
     printf("Input File:  %s\n", in_file_name);
     printf("Output File:  %s\n", out_file_name);
-    printf("No. of Active Cells:  %d\n", nintcf);
+    printf("No. of Active Cells:  %d\n", nintcf + 1);
     printf("Iterations Count: %d\n", total_iters);
     printf("Residual Ratio: %e\n", residual_ratio);
     printf("========================================\n\n");
@@ -208,3 +211,69 @@ void vtk_append_integer(const char *out_file_name, const char *var_name, int sta
     if ( fclose(fp) ) fprintf(stderr, "Failed to close %s", out_file_name);
 }
 
+void visualize_distribution(char *input_file_name, char *output_name, int my_rank, int data_size, int *local_global_index)
+{
+    int i;
+
+    // Setup VTK test file
+    char vtk_test_file_name[50];
+    char rank_num[10];
+    strcpy(vtk_test_file_name, output_name);
+    snprintf(rank_num, sizeof(rank_num), "_%d", my_rank);
+    strcat(vtk_test_file_name, rank_num);
+    strcat(vtk_test_file_name, ".vtk");
+
+    // Setup test output to VTK
+    double *test_output;
+    test_output = malloc(data_size * sizeof(*test_output));
+    for(i = 0; i < data_size; i++)
+    {
+        test_output[i] = (double)my_rank + 1.0;
+    }
+
+    test_distribution(input_file_name, vtk_test_file_name, local_global_index, data_size, test_output);
+
+    free(test_output);
+}
+
+visualize_communication(char *input_file_name, char *output_name, char *part_type, char *comm_type, int my_rank, int nghb_idx,
+    int send_cnt, int *send_lst)
+{
+    int i;
+    double *test_output;
+
+    // Setup VTK test file
+    char vtk_test_file_name[50];
+    char my_rank_num[25];
+    char nghb_rank_idx[25];
+    char comm[25];
+    char part[25];
+
+    strcpy(vtk_test_file_name, output_name);
+
+    snprintf(comm, sizeof(comm), ".%s", comm_type);
+    strcat(vtk_test_file_name, comm);
+
+    snprintf(my_rank_num, sizeof(my_rank_num), ".rank%d", my_rank);
+    strcat(vtk_test_file_name, my_rank_num);
+
+    snprintf(nghb_rank_idx, sizeof(nghb_rank_idx), ".neighbor%d", nghb_idx);
+    strcat(vtk_test_file_name, nghb_rank_idx);
+
+    snprintf(part, sizeof(part), ".%s", part_type);
+    strcat(vtk_test_file_name, part);
+
+    strcat(vtk_test_file_name, ".vtk");
+
+    // Setup test output to VTK
+    test_output = calloc(send_cnt, sizeof(*test_output));
+    for(i = 0; i < send_cnt; i++)
+    {
+        test_output[i] = (double)nghb_idx + 1.0;
+    }
+
+    test_distribution(input_file_name, vtk_test_file_name, send_lst, send_cnt, test_output);
+    // printf("  %s\n", vtk_test_file_name);
+
+    free(test_output);
+}

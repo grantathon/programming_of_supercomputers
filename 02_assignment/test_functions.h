@@ -23,6 +23,16 @@ int write_pstats_partition( int input_key,
 				            int local_intc,
 				            int local_extc );
 
+int write_pstats_communication( int input_key,
+                            int part_key,
+                            int my_rank,
+                            int nprocs,
+                            int nghb_cnt,
+                            int nghb_idx,
+                            int* send_cnt,
+                            int** send_lst,
+                            int* recv_cnt,
+                            int** recv_lst );
 
 #endif /* TEST_FUNCTIONS_H_ */
 

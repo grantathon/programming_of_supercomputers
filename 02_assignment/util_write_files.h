@@ -61,5 +61,10 @@ void vtk_append_double(const char *out_file_name, const char *var_name, int star
 void vtk_append_integer(const char *out_file_name, const char *var_name, int start_index,
                         int end_index, int *values);
 
+void visualize_distribution(char *input_file_name, char *output_name, int my_rank, int data_size, int *local_global_index);
+
+void visualize_communication(char *input_file_name, char *output_name, char *part_type, char *comm_type, int my_rank, int nghb_idx,
+    int send_cnt, int *send_lst);
+
 #endif /* XWRITE_H_ */
 

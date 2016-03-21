@@ -99,9 +99,11 @@ int write_pstats_exectime( int input_key,
 				           long long time_usec ){
 
 	// append to existing file
-    FILE *fp = fopen( "pstats.dat", "a" );
+    char pstatsname[20];
+    sprintf(pstatsname, "pstats_%d.dat", my_rank);
+    FILE *fp = fopen( pstatsname, "a" );
     if( fp == NULL ){
-        printf( "Error opening file pstats.dat for writing\n" );
+        printf( "Error opening file %s for writing\n", pstatsname );
         return -1;
     }
 
@@ -133,9 +135,11 @@ int write_pstats_partition( int input_key,
 				            int local_extc ){
 
 	// append to existing file
-    FILE *fp = fopen( "pstats.dat", "a" );
+    char pstatsname[20];
+    sprintf(pstatsname, "pstats_%d.dat", my_rank);
+    FILE *fp = fopen( pstatsname, "a" );
     if( fp == NULL ){
-        printf( "Error opening file pstats.dat for writing\n" );
+        printf( "Error opening file %s for writing\n", pstatsname );
         return -1;
     }
 
@@ -145,3 +149,53 @@ int write_pstats_partition( int input_key,
 
     return 0;
 }
+
+/* Write statistics to pstats.dat 
+ * @param input_key: 1 - tjunc
+                     2 - drall
+                     3 - pent
+                     4 - cojack
+ * @param part_key: 1 - classic
+                    2 - dual
+                    3 - nodal
+ * @param my_rank: current process rank
+ * @param nprocs: the total number of processes
+ * @param nghb_cnt: the total number of neighbours
+ * @param nghb_idx: the index of the neighbour to output data for
+ * @param send_cnt: the number of cells to be sent to each neighbour
+ * @param send_lst: the indexes of the cells to be sent to each neighbour
+ * @param recv_cnt: the number of cells to be received from each neighbour
+ * @param recv_lst: the indexes of the cells to be received from each neighbour
+ * @return
+ */
+
+int write_pstats_communication( int input_key,
+                            int part_key,
+                            int my_rank,
+                            int nprocs,
+                            int nghb_cnt,
+                            int nghb_idx,
+                            int* send_cnt,
+                            int** send_lst,
+                            int* recv_cnt,
+                            int** recv_lst ){
+
+    // append to existing file
+    char pstatsname[20];
+    sprintf(pstatsname, "pstats_%d.dat", my_rank);
+    FILE *fp = fopen( pstatsname, "a" );
+    if( fp == NULL ){
+        printf( "Error opening file %s for writing\n", pstatsname );
+        return -1;
+    }
+
+
+    fprintf( fp, "COMMUNICATION %d %d %d %d %d %d %d %d %d %d %d %d\n", 
+        input_key, part_key, my_rank, nprocs, nghb_cnt, nghb_idx, 
+        send_lst[nghb_idx][0], send_lst[nghb_idx][(send_cnt[nghb_idx]-1)/2], send_lst[nghb_idx][send_cnt[nghb_idx]-1],
+        recv_lst[nghb_idx][0], recv_lst[nghb_idx][(recv_cnt[nghb_idx]-1)/2], recv_lst[nghb_idx][recv_cnt[nghb_idx]-1]);
+    fclose( fp );
+
+    return 0;
+}
+

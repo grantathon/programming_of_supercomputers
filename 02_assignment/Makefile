@@ -4,9 +4,11 @@
 #                                                                  #
 ####################################################################
 
-CC = mpicc
-CFLAGS = -Wall -g -O0 
-LIBS = -lm
+CC = $(PREP) mpicc
+CFLAGS = -Wall -g -O0 $(METIS_INC)
+LIBS = -lm $(METIS_LIB)
+# CFLAGS = -Wall -g -O0 $(METIS_INC) $(PAPI_INC)
+# LIBS = -lm $(METIS_LIB) $(PAPI_LIB)
 
 LIBPOS=libpos.a
 AR = ar
